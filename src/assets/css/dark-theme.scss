@@ -1,0 +1,60 @@
+// Dark Mode for United 5.0.1
+
+$theme: "dark" !default;
+
+//
+// Color system
+//
+
+$white:    #fff !default;
+$gray-100: #2a2a2a !default;
+$gray-200: #3b3b3b !default;
+$gray-300: #4c4c4c !default;
+$gray-400: #5e5e5e !default;
+$gray-500: #808080 !default;
+$gray-600: #999 !default;
+$gray-700: #b0b0b0 !default;
+$gray-800: #c9c9c9 !default;
+$gray-900: #e0e0e0 !default;
+$black:    #000 !default;
+
+$blue:    #007bff !default;
+$indigo:  #6610f2 !default;
+$purple:  #9953a5 !default;
+$pink:    #e83e8c !default;
+$red:     #df382c !default;
+$orange:  #e95420 !default;
+$yellow:  #efb73e !default;
+$green:   #38b44a !default;
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default;
+
+$primary:       $orange !default;
+$secondary:     $gray-500 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-800 !default;
+$dark:          $purple !default;
+
+$min-contrast-ratio:   4.5 !default;
+
+// Body
+
+$body-bg:                   $gray-100 !default;
+$body-color:                $gray-800 !default;
+
+// Fonts
+
+// stylelint-disable-next-line value-keyword-case
+$font-family-sans-serif:      Ubuntu, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+
+// Tables
+
+$table-dark-bg:               $dark !default;
+$table-dark-border-color:     darken($dark, 5%) !default;
+
+@import 'bootstrap/scss/bootstrap';
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+

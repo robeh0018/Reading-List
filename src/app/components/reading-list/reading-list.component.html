@@ -1,0 +1,28 @@
+<ng-template #content let-offcanvas>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title">Reading List</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="row p-2">
+      <div
+        *ngFor="let book of (readingList$ | async )"
+        class="col-6 d-flex align-items-center justify-content-center mt-1"
+      >
+        <app-book [config]="bookCardConfig" [book]="book"/>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-outline-dark w-100  mx-1 my-2" (click)="offcanvas.close('Close click')">
+      <i class="bi bi-back"></i> Back to Book list
+    </button>
+  </div>
+</ng-template>
+
+<button class="btn btn-outline-light rounded-4 me-1 position-relative" (click)="openEnd(content)">
+  <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-primary">
+    {{ (readingList$ | async)?.length }}
+    <span class="visually-hidden">unread messages</span>
+  </span>
+  <i class="bi bi-book-half text-primary"></i>
+</button>

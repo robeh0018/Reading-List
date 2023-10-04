@@ -1,0 +1,59 @@
+<!--Counter-->
+<h2 class="my-4"><span class="text-primary">{{ ( bookList$ | async )?.length }}</span> Available Books</h2>
+<!--Options section-->
+<section>
+  <form [formGroup]="filtersForm" class="row g-1 g-sm-5 d-sm-flex align-items-center">
+    <!--Search-->
+    <div class="col-12">
+      <label for="typeahead-basic">Search for a title:</label>
+      <input
+        id="typeahead-basic"
+        type="text"
+        class="form-control"
+        [ngbTypeahead]="search"
+        [inputFormatter]="searchBookFormatter"
+        [resultFormatter]="searchBookFormatter"
+        formControlName="currentTitleSearch"
+      />
+    </div>
+    <div class="col-12 col-sm-6">
+      <label for="customRange3" class="form-label text-primary">Filter by pages</label>
+      <span class="fs-4 ms-3">{{ filtersForm.get('currentPage')?.value}}</span>
+      <input
+        type="range"
+        class="form-range"
+        [min]="pagesRange.minPage"
+        [max]="pagesRange.maxPage"
+        [value]="pagesRange.maxPage"
+        step="1"
+        id="customRange3"
+        formControlName="currentPage"
+      >
+    </div>
+    <div class="col-12 col-sm-6">
+      <label for="customRange3" class="form-label text-primary">Filter by gender</label>
+      <select
+        class="form-select form-select-sm bg-dark-black text-light-orange"
+        aria-label=".form-select-sm example"
+        formControlName="selectedGenre"
+      >
+        <option *ngFor="let genre of (genres$ | async)" [value]="genre">{{ genre }}</option>
+      </select>
+    </div>
+  </form>
+</section>
+
+<!--Book list section-->
+<section class="row g-3 g-sm-5 mt-3">
+
+  <div
+    *ngFor="let book of ( bookList$ | async )"
+    class="col-12 col-md-6 col-lg-4  d-flex justify-content-center"
+    [ngClass]="{'opacity-25': book.isReading}"
+  >
+
+    <app-book [book]="book"/>
+
+  </div>
+
+</section>

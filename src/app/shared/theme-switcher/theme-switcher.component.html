@@ -1,0 +1,5 @@
+<button class="btn btn-outline-light rounded-4" (click)="onSwitchTheme()">
+  <i *ngIf="theme.getCurrent() === 'dark'" class="bi bi-sun-fill text-primary"></i>
+  <i *ngIf="theme.getCurrent() === 'light'" class="bi bi-moon-stars text-primary"></i>
+</button>
+
