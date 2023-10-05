@@ -2,7 +2,7 @@ import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 
 import {BookListComponent, ReadingListComponent} from "./components";
-import {ThemeSwitcherComponent} from "./shared";
+import {ThemeSwitcherComponent, ToastsContainer} from "./shared";
 import {BookService, LocalStorageService} from "./services";
 
 @Component({
@@ -11,7 +11,8 @@ import {BookService, LocalStorageService} from "./services";
   imports: [
     BookListComponent,
     ThemeSwitcherComponent,
-    ReadingListComponent
+    ReadingListComponent,
+    ToastsContainer
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
