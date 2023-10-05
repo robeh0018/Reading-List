@@ -104,37 +104,52 @@ export class BookService {
     }
   };
 
-  // Search by title Functionality
-  searchByTitle(book: IBook) {
-    this.currentTitleFilter = book.title;
-    const filteredBooks = this.bookList$.getValue().filter(
-      book => book.title.toLowerCase().indexOf(this.currentTitleFilter.toLowerCase()) > -1);
-
-    this.filteredBookList$.next(filteredBooks);
-  }
-
   // Filter Functionality
+
+  // Filter by genre
   filterByGenre(genre: string): void {
     this.currentGenreFilter = genre;
     this.applyFilters();
   };
 
+  // Filter by page
   filterByPage(page: number) {
     this.currentPageFilter = page;
     this.applyFilters();
   }
 
+  // Filter by title
+  filterByTitle(term: string) {
+    this.currentTitleFilter = term;
+    this.applyFilters();
+  }
+
+  clearFilterByTitle() {
+    this.currentTitleFilter = '';
+    this.applyFilters();
+  }
+
+  // Apply all filters at the same time
   private applyFilters(): void {
     let filteredBooks = [...this.bookList$.getValue()];
 
     // Filter by genre
     if (this.currentGenreFilter !== 'All') {
-      filteredBooks = filteredBooks.filter(book => book.genre === this.currentGenreFilter);
+      filteredBooks = filteredBooks.filter(
+        book => book.genre === this.currentGenreFilter);
     }
 
     // Filter by page
     if (this.currentPageFilter > 0) {
-      filteredBooks = filteredBooks.filter(book => book.pages <= this.currentPageFilter);
+      filteredBooks = filteredBooks.filter(
+        book => book.pages <= this.currentPageFilter);
+    }
+
+    // Filter by title
+    if (this.currentTitleFilter.length > 0) {
+      filteredBooks = filteredBooks.filter(
+        book => book.title.toLowerCase()
+          .includes(this.currentTitleFilter.toLowerCase()));
     }
 
     this.filteredBookList$.next(filteredBooks);
