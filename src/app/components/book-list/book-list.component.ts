@@ -23,7 +23,7 @@ import {NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./book-list.component.scss']
 })
 export class BookListComponent implements OnInit, OnDestroy {
-  bookList$: Observable<IBook[]>;
+  bookList: IBook[];
   genres$: Observable<string[]>;
 
   pagesRange: IPagesRange;
@@ -36,7 +36,7 @@ export class BookListComponent implements OnInit, OnDestroy {
               private fb: FormBuilder) {
 
     // Variables initialization
-    this.bookList$ = new Observable<IBook[]>();
+    this.bookList = [];
     this.genres$ = new Observable<string[]>();
 
     this.pagesRange = {
@@ -56,7 +56,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit() {
-    this.bookList$ = this.bookService.getBookList();
+    this.bookListSub = this.bookService.getBookList().subscribe(books => this.bookList = books);
     this.genres$ = this.bookService.getGenres();
 
     this.bookService.getPageRange()
@@ -73,9 +73,9 @@ export class BookListComponent implements OnInit, OnDestroy {
       this.bookService.filterByPage(page);
     });
 
-    this.filtersForm.get('currentTitleSearch')?.valueChanges.subscribe((value: any) => {
-      if (typeof value === 'object') {
-        this.bookService.searchByTitle(value);
+    this.filtersForm.get('currentTitleSearch')?.valueChanges.subscribe((title: string) => {
+      if (title === '') {
+        this.bookService.clearFilterByTitle();
       }
     });
   }
@@ -84,15 +84,33 @@ export class BookListComponent implements OnInit, OnDestroy {
     this.bookListSub.unsubscribe();
   }
 
+  onSearchBook(): void {
+    const term = this.filtersForm.get('currentTitleSearch')?.value;
+
+    this.bookService.filterByTitle(term);
+  }
+
+  clearSearch(): void {
+    this.filtersForm.get('currentTitleSearch')?.setValue('');
+    this.bookService.clearFilterByTitle();
+  }
+
   // Search by title Feature
-    // Formatter for the BookSSearch BookS Formatter
-  searchBookFormatter = (book: IBook) => book.title;
-  search: OperatorFunction<string, readonly IBook[]> = (text$: Observable<string>) =>
+  // Formatter for the BookSSearch BookS Formatter
+  // searchBookFormatter = (book: IBook) => book.title;
+  search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       map((term) =>
-        term.length < 1 ? [] : this.bookService.getFullBookListValue().filter((book) => book.title.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10),
+        term.length < 1
+          ? []
+          : this.bookList
+            .map(book => book.title)
+            .filter(
+              title => title.toLowerCase()
+                .includes(term.toLowerCase())
+            ).slice(0, 10),
       ),
     );
 
